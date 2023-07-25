@@ -1,22 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Switch, Route } from "react-router-dom";
+import UserProfile from "./UserProfile";
 
 function App() {
   return (
-    // No need to add <Router>, it has been added to ./index.js
     <div className="App">
-      <Link to="/user/new">New User</Link>
-      {Array(10)
-        .fill()
-        .map((ignoredValue, index) => index + 1)
-        .map((id) => (
-          <div key={id}>
-            <Link to={`/user/${id}`} data-testid={`user-${id}`}>
-              User{id}
-            </Link>
-          </div>
-        ))}
-      // Setup routes with route paramaters as needed
+      <Switch>
+        {/* Route for displaying the "New User" link */}
+        <Route path="/user/new">
+          <div>Unable to create a new user</div>
+        </Route>
+
+        {/* Route for displaying the UserProfile for the specified ID */}
+        <Route path="/user/:userId">
+          <UserProfile />
+        </Route>
+
+        {/* Route for displaying the list of users */}
+        <Route exact path="/">
+          <Link to="/user/new">New User</Link>
+          {Array(10)
+            .fill()
+            .map((ignoredValue, index) => index + 1)
+            .map((id) => (
+              <div key={id}>
+                <Link to={`/user/${id}`} data-testid={`user-${id}`}>
+                  User{id}
+                </Link>
+              </div>
+            ))}
+        </Route>
+
+        {/* 404 Route - Any other route displays "404 Not Found" */}
+        <Route>
+          <h1>404 Not Found</h1>
+        </Route>
+      </Switch>
     </div>
   );
 }
